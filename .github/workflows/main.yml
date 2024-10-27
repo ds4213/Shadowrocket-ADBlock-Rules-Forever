@@ -27,10 +27,19 @@ jobs:
         run: |
           git merge upstream/release --allow-unrelated-histories --no-edit
 
+      - name: Debug - List Files in Release Directory
+        run: |
+          ls -la release
+
       - name: Modify Conf File
         run: |
-          sed -i 's|dns-server = https://dns.alidns.com/dns-query, https://doh.pub/dns-query|dns-server = https://dns.alidns.com/dns-query, https://doh.pub/dns-query, 114.114.114.114, 8.8.8.8, 8.8.4.4, 1.1.1.1, 1.0.0.1, 9.9.9.9, 208.67.222.222, 208.67.220.220|g' release/sr_backcn_ad.conf
-          cp release/sr_backcn_ad.conf release/sr_backcn_ad_mod.conf
+          if [ -f release/sr_backcn_ad.conf ]; then
+            sed -i 's|dns-server = https://dns.alidns.com/dns-query, https://doh.pub/dns-query|dns-server = https://dns.alidns.com/dns-query, https://doh.pub/dns-query, 114.114.114.114, 8.8.8.8, 8.8.4.4, 1.1.1.1, 1.0.0.1, 9.9.9.9, 208.67.222.222, 208.67.220.220|g' release/sr_backcn_ad.conf
+            cp release/sr_backcn_ad.conf release/sr_backcn_ad_mod.conf
+          else
+            echo "File release/sr_backcn_ad.conf not found!"
+            exit 1
+          fi
 
       - name: Commit and Push Changes
         run: |
