@@ -29,8 +29,8 @@ jobs:
 
       - name: Commit and Push Changes
         run: |
-          git config --global ds4213 'github-actions[bot]'
-          git config --global ds4213@gmail.com 'github-actions[bot]@users.noreply.github.com'
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add release/sr_backcn_ad_mod.conf
           git commit -m "Update and modify sr_backcn_ad.conf"
           git push origin main  # Change 'main' to your fork's branch name if needed
