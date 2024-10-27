@@ -1,0 +1,33 @@
+name: Update and Modify Conf File
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs every day at midnight
+  workflow_dispatch:
+
+jobs:
+  update_conf:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Fetch Upstream Changes
+        run: |
+          git remote add upstream https://github.com/Johnshall/Shadowrocket-ADBlock-Rules-Forever.git
+          git fetch upstream
+          git merge upstream/release --no-edit
+
+      - name: Modify Conf File
+        run: |
+          sed -i 's|dns-server = https://dns.alidns.com/dns-query, https://doh.pub/dns-query|dns-server = https://dns.alidns.com/dns-query, https://doh.pub/dns-query, 114.114.114.114, 8.8.8.8, 8.8.4.4, 1.1.1.1, 1.0.0.1, 9.9.9.9, 208.67.222.222, 208.67.220.220|g' release/sr_backcn_ad.conf
+          cp release/sr_backcn_ad.conf release/sr_backcn_ad_mod.conf
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add release/sr_backcn_ad_mod.conf
+          git commit -m "Update and modify sr_backcn_ad.conf"
+          git push origin main
