@@ -46,11 +46,13 @@ jobs:
           else
             sed -i 's|dns-server = https://dns.alidns.com/dns-query, https://doh.pub/dns-query|dns-server = https://dns.alidns.com/dns-query, https://doh.pub/dns-query, 114.114.114.114, 8.8.8.8, 8.8.4.4, 1.1.1.1, 1.0.0.1, 9.9.9.9, 208.67.222.222, 208.67.220.220|g' "$CONF_PATH"
             cp "$CONF_PATH" "$(dirname $CONF_PATH)/sr_backcn_ad_mod.conf"
+            # Add a timestamp to force a change
+            echo "# Updated on $(date)" >> sr_backcn_ad_mod.conf
           fi
 
       - name: Commit and Push Changes
         run: |
           git add .
-          git commit -m "Update and modify sr_backcn_ad.conf"
+          git commit -m "Update sr_backcn_ad_mod.conf with new DNS entries" --allow-empty
           git push origin release  # Change 'main' to your fork's branch name if needed
           git pull origin release  # Pull to ensure the latest changes from your fork
