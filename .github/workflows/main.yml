@@ -23,9 +23,9 @@ jobs:
           git remote add upstream https://github.com/Johnshall/Shadowrocket-ADBlock-Rules-Forever.git
           git fetch upstream
 
-      - name: Merge Upstream Changes
+      - name: Copy Files from Upstream Release
         run: |
-          git merge upstream/release --allow-unrelated-histories --no-edit
+          git checkout upstream/release -- .
 
       - name: Debug - List Root Directory
         run: |
@@ -53,3 +53,4 @@ jobs:
           git add .
           git commit -m "Update and modify sr_backcn_ad.conf"
           git push origin release  # Change 'main' to your fork's branch name if needed
+          git pull origin release  # Pull to ensure the latest changes from your fork
