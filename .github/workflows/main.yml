@@ -56,11 +56,10 @@ jobs:
 
       - name: Commit and Push Changes
         run: |
-          # Only add files outside .github/workflows to the commit
-          git add --all -- ':!./.github/workflows/*'
-          # Commit changes if there are any
+          git reset HEAD .github/workflows/*  # Unstage any accidentally staged workflow files
+          git add --all -- ':!./.github/workflows/*'  # Stage all changes except workflow files
+          git status  # Check to confirm no workflow files are staged
           git commit -m "Update sr_backcn_ad_mod.conf with new DNS entries" || echo "No changes to commit"
-          # Push changes to the release branch
           git push origin release
 
 
