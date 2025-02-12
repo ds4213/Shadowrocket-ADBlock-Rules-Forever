@@ -56,7 +56,8 @@ jobs:
 
       - name: Commit and Push Changes
         run: |
-          git add .
+          # Exclude .github/workflows/* files to avoid permissions issues
+          git add -- ':!./.github/workflows/*'
           git commit -m "Update sr_backcn_ad_mod.conf with new DNS entries" --allow-empty
-          git push origin release  # Change 'main' to your fork's branch name if needed
-          git pull origin release  # Pull to ensure the latest changes from your fork
+          git push origin release
+
